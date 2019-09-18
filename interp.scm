@@ -3,7 +3,7 @@
 
 ;; the star of the show, the interpreter
 ;; this function interprets a lambda term using
-;; an environment, defined in the usual way as a
+;; an environment, defined, in the usual way, as a
 ;; fucntion that partially maps a symbol to a value
 (define (eval-expr expr env)
   (pmatch expr
