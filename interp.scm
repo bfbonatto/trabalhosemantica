@@ -26,6 +26,10 @@
   (lambda (y)
     (if (eq? y e) new (old y))))
 
+;; helper function, checks if the procedure returned by eval-expr
+;; is (true) or (false)
+(define (is-true? p) (= 1 ((p 1) 2)))
+
 (define-syntax ilambda
   (syntax-rules ()
     [(_ (x) body) '(lambda (x) body)]
@@ -42,3 +46,7 @@
 (define-syntax iif
   (syntax-rules (ithen ielse)
     [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
+
+(define-syntax ilet
+  (syntax-rules (be in)
+    [(_ x be y in body) ((lambda (x) body) y)]))
