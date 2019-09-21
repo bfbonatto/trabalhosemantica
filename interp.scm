@@ -1,4 +1,4 @@
-;;Although we don't need it, pattern-matching is very useful
+;; Although we don't need it, pattern-matching is very useful
 (load "pmatch.scm")
 
 ;; the star of the show, the interpreter
@@ -25,3 +25,20 @@
 (define (extend old e new)
   (lambda (y)
     (if (eq? y e) new (old y))))
+
+(define-syntax ilambda
+  (syntax-rules ()
+    [(_ (x) body) '(lambda (x) body)]
+    [(_ (x y ...) body) `(lambda (x) ,(ilambda (y ...) body))]
+    ))
+
+(define-syntax true
+  (syntax-rules ()
+    [(_) (ilambda (x y) x)]))
+(define-syntax false
+  (syntax-rules ()
+    [(_) (ilambda (x y) y)]))
+
+(define-syntax iif
+  (syntax-rules (ithen ielse)
+    [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
