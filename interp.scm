@@ -59,13 +59,3 @@
 (define-syntax iif
   (syntax-rules (ithen ielse)
     [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
-
-(define-syntax ilet
-  (syntax-rules (be in)
-    [(_ x be y in body) ((lambda (x) body) y)]))
-
-(define-syntax ilet*
-  (syntax-rules (be in)
-    [(_ ((x be y)) in body) (ilet x be y in body)]
-    [(_ ((x be y) (x1 be y1) ...) in body) (ilet x be y in (ilet* ((x1 be y1) ...) in body))]
-    ))
