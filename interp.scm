@@ -19,7 +19,7 @@
 
 ;; the empty environment
 (define empty
-  (lambda (y) (error 'lookup "unbound")))
+  (lambda (y) (error 'lookup (string-append "unbound " (symbol->string y)))))
 
 ;; helper function, just extends the current environment
 (define (extend old e new)
