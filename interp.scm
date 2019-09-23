@@ -43,6 +43,15 @@
   (syntax-rules ()
     [(_) (ilambda (x y) y)]))
 
+;;(define-syntax not
+;;  (syntax-rules ()
+;;    [(_ p) (ilambda (x y) `((,p y) x))]))
+(define-syntax not
+  (syntax-rules ()
+    [(_ p) 
+     `(lambda (x) (lambda (y) ((,p y) x)))
+     ]))
+
 (define-syntax iif
   (syntax-rules (ithen ielse)
     [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
