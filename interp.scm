@@ -32,6 +32,13 @@
 ;; is (true) or (false)
 (define (is-true? p) (= 1 ((p 1) 2)))
 
+;; macro for translating multi argument functions into
+;; one argument functions
+(define-syntax ilambda
+  (syntax-rules ()
+    [(_ (x) body) `(lambda (x) ,(expand body))]
+    [(_ (x y ...) body) `(lambda (x) ,(expand ( ilambda (y ...) body )))]))
+
 ;; church encoded true and false
 (define-syntax true
   (syntax-rules ()
@@ -45,7 +52,3 @@
   (syntax-rules (ithen ielse)
     [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
 
-(define-syntax ilambda
-  (syntax-rules ()
-    [(_ (x) body) `(lambda (x) ,(expand body))]
-    [(_ (x y ...) body) `(lambda (x) ,(expand ( ilambda (y ...) body )))]))
