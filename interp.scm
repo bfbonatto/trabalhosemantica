@@ -32,30 +32,20 @@
 ;; is (true) or (false)
 (define (is-true? p) (= 1 ((p 1) 2)))
 
-
-;;
-;; MACROS:
-;;  All macros will return a *quoted* term so that the
-;;  interpreter can evaluate it
-;;
-
-;; macro:
-;; auto curries functions
-(define-syntax ilambda
-  (syntax-rules ()
-    [(_ (x) body) '(lambda (x) body)]
-    [(_ (x y ...) body) `(lambda (x) ,(ilambda (y ...) body))]
-    ))
-
 ;; church encoded true and false
 (define-syntax true
   (syntax-rules ()
-    [(_) (ilambda (x y) x)]))
+    [(_) (ilambda (x y) 'x)]))
 (define-syntax false
   (syntax-rules ()
-    [(_) (ilambda (x y) y)]))
+    [(_) (ilambda (x y) 'y)]))
 
 ;; church encoded if
 (define-syntax iif
   (syntax-rules (ithen ielse)
     [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
+
+(define-syntax ilambda
+  (syntax-rules ()
+    [(_ (x) body) `(lambda (x) ,(expand body))]
+    [(_ (x y ...) body) `(lambda (x) ,(expand ( ilambda (y ...) body )))]))
