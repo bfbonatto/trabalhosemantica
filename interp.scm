@@ -52,3 +52,7 @@
   (syntax-rules (ithen ielse)
     [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
 
+;; let encoded as function application
+(define-syntax ilet
+  (syntax-rules (be in)
+    [(_ x be y in body) `(,(ilambda (x) body) ,y)]))
