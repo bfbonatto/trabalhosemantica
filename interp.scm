@@ -30,32 +30,19 @@
 ;; is (true) or (false)
 (define (is-true? p) (= 1 ((p 1) 2)))
 
-(define-syntax ilambda
-  (syntax-rules ()
-    [(_ (x) body) '(lambda (x) body)]
-    [(_ (x y ...) body) `(lambda (x) ,(ilambda (y ...) body))]
-    ))
 
 (define-syntax true
   (syntax-rules ()
-    [(_) (ilambda (x y) x)]))
+    [(_) (ilambda (x y) 'x)]))
 (define-syntax false
   (syntax-rules ()
-    [(_) (ilambda (x y) y)]))
-
-;;(define-syntax not
-;;  (syntax-rules ()
-;;    [(_ p) (ilambda (x y) `((,p y) x))]))
-(define-syntax not
-  (syntax-rules ()
-    [(_ p) 
-     `(lambda (x) (lambda (y) ((,p y) x)))
-     ]))
+    [(_) (ilambda (x y) 'y)]))
 
 (define-syntax iif
   (syntax-rules (ithen ielse)
     [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
 
-(define-syntax ilet
-  (syntax-rules (be in)
-    [(_ x be y in body) `((lambda (x) body) ,y)]))
+(define-syntax ilambda
+  (syntax-rules ()
+    [(_ (x) body) `(lambda (x) ,(expand body))]
+    [(_ (x y ...) body) `(lambda (x) ,(expand ( ilambda (y ...) body )))]))
