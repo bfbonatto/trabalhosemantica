@@ -56,3 +56,10 @@
 (define-syntax ilet
   (syntax-rules (be in)
     [(_ x be y in body) `(,(ilambda (x) body) ,y)]))
+
+(define-syntax iand
+  (syntax-rules ()
+    [(_ x y) `((,x ,y) ,(false))]))
+(define-syntax ior
+  (syntax-rules ()
+    [(_ x y) `((,x ,(true)) ,y)]))
