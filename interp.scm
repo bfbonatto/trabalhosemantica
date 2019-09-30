@@ -67,3 +67,11 @@
 (define-syntax inot
   (syntax-rules ()
     [(_ p) `((,p ,(false)) ,(true))]))
+
+(define (repeat f x n)
+  (cond
+    [(= 0 n) 'x]
+    [else `(f ,(repeat f x (sub1 n)))]))
+
+(define (number n)
+  `(lambda (f) (lambda (x) ,(repeat 'f 'x n))))
