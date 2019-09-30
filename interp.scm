@@ -63,3 +63,7 @@
 (define-syntax ior
   (syntax-rules ()
     [(_ x y) `((,x ,(true)) ,y)]))
+
+(define-syntax inot
+  (syntax-rules ()
+    [(_ p) `((,p ,(false)) ,(true))]))
