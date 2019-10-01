@@ -46,11 +46,17 @@
 (define (ior p1 p2)
   `((,p1 ,true) ,p2))
 
+(define (inot p)
+  `((,p ,false) ,true))
 
 
 (define (ilet x y body)
   `((lambda (,x) ,body) ,y))
 
-(define zero
-  '(lambda (f) (lambda (x) x)))
+(define (repeat n)
+  (cond
+    [(= n 0) 'x]
+    [else `(f ,(repeat (sub1 n)))]))
 
+(define (number n)
+  `(lambda (f) (lambda (x) ,(repeat n))))
