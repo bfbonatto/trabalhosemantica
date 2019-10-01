@@ -32,38 +32,18 @@
 ;; is (true) or (false)
 (define (is-true? p) (= 1 ((p 1) 2)))
 
-;; macro for translating multi argument functions into
-;; one argument functions
-(define-syntax ilambda
-  (syntax-rules ()
-    [(_ (x) body) `(lambda (x) ,(expand body))]
-    [(_ (x y ...) body) `(lambda (x) ,(expand ( ilambda (y ...) body )))]))
 
-;; church encoded true and false
-(define-syntax true
-  (syntax-rules ()
-    [(_) (ilambda (x y) 'x)]))
-(define-syntax false
-  (syntax-rules ()
-    [(_) (ilambda (x y) 'y)]))
+(define true
+  '(lambda (x) (lambda (y) x)))
+(define false
+  '(lambda (x) (lambda (y) y)))
 
-;; church encoded if
-(define-syntax iif
-  (syntax-rules (ithen ielse)
-    [(_ p ithen e1 ielse e2) `((,p ,e1) ,e2)]))
+(define (iif p x y)
+  `((,p ,x) ,y))
 
-;; let encoded as function application
-(define-syntax ilet
-  (syntax-rules (be in)
-    [(_ x be y in body) `(,(ilambda (x) body) ,y)]))
+(define (ilet x y body)
+  `((lambda (,x) ,body) ,y))
 
-(define-syntax iand
-  (syntax-rules ()
-    [(_ x y) `((,x ,y) ,(false))]))
-(define-syntax ior
-  (syntax-rules ()
-    [(_ x y) `((,x ,(true)) ,y)]))
+(define zero
+  '(lambda (f) (lambda (x) x)))
 
-(define-syntax inot
-  (syntax-rules ()
-    [(_ p) `((,p ,(false)) ,(true))]))
