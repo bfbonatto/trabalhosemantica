@@ -41,6 +41,13 @@
 (define (iif p x y)
   `((,p ,x) ,y))
 
+(define (iand p1 p2)
+  `((,p1 ,p2) ,false))
+(define (ior p1 p2)
+  `((,p1 ,true) ,p2))
+
+
+
 (define (ilet x y body)
   `((lambda (,x) ,body) ,y))
 
