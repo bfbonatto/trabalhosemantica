@@ -60,3 +60,9 @@
 
 (define (number n)
   `(lambda (f) (lambda (x) ,(repeat n))))
+
+(define (add x y)
+  `(lambda (f) (lambda (x) ((,x f) ((,y f) x)))))
+
+(define (print-number n)
+  (((eval-expr n empty) add1) 0))
