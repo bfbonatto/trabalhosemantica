@@ -38,7 +38,10 @@
 (define false
   '(lambda (x) (lambda (y) y)))
 
-(define (iif p x y)
+(define-syntax iif
+  (syntax-rules (then else)
+    ([_ p then e1 else e2] (_if p e1 e2))))
+(define (_if p x y)
   `((,p ,x) ,y))
 
 (define (iand p1 p2)
@@ -50,7 +53,10 @@
   `((,p ,false) ,true))
 
 
-(define (ilet x y body)
+(define-syntax ilet
+  (syntax-rules (be in)
+    ([_ x be y in body] (_let x y body))))
+(define (_let x y body)
   `((lambda (,x) ,body) ,y))
 
 (define (repeat n)
