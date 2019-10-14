@@ -75,9 +75,11 @@
 (define (number n)
   `(lambda (f) (lambda (x) ,(repeat n))))
 
+
 ;; auxiliary functions on numbers
 (define (_add m n)
   `(lambda (f) (lambda (x) ((,m f) ((,n f) x)))))
+
 
 (define (_mult m n)
   `(lambda (f) (lambda (x) ((,m (,n f)) x))))
