@@ -28,4 +28,3 @@
 (define (extend old e new)
   (lambda (y)
     (if (eq? y e) new (old y))))
-
