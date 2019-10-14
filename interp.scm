@@ -22,6 +22,7 @@
 (define empty
   (lambda (y) (error 'lookup (string-append "unbound " (symbol->string y)))))
 
+
 ;; helper function, just extends the current environment
 ;; forall x. forall e. forall value. ((extend e x v) x) = v
 (define (extend old e new)
@@ -74,9 +75,24 @@
 (define (number n)
   `(lambda (f) (lambda (x) ,(repeat n))))
 
-;; adding numbers
-(define (add x y)
-  `(lambda (f) (lambda (x) ((,x f) ((,y f) x)))))
+;; auxiliary functions on numbers
+(define (_add m n)
+  `(lambda (f) (lambda (x) ((,m f) ((,n f) x)))))
+
+(define (_mult m n)
+  `(lambda (f) (lambda (x) ((,m (,n f)) x))))
+
+(define _pred
+'(lambda (n)
+                (lambda (f)
+                  (lambda (z)
+                    (((n (lambda (g) (lambda (h) 
+                                  (h (g f)))))
+                      (lambda (u) z))
+                     (lambda (u) u))))))
+
+(define (_minus m n)
+  `((,n ,_pred) ,m))
 
 ;; printing numbers
 (define (print-number n)
