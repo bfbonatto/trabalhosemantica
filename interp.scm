@@ -23,7 +23,7 @@
   (lambda (y) (error 'lookup (string-append "unbound " (symbol->string y)))))
 
 ;; helper function, just extends the current environment
-;; forall x. forall e. forall value. ((extend e x v) x) = v
+;; forall x. forall e. forall v. ((extend e x v) x) = v
 (define (extend old e new)
   (lambda (y)
     (if (eq? y e) new (old y))))
