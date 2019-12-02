@@ -28,3 +28,62 @@
   (lambda (y)
     (if (eq? y e) new (old y))))
 
+
+;;(define-syntax iif
+;;  (syntax-rules (then else)
+;;    ([_ p then e1 else e2] (_if p e1 e2))))
+;;(define (_if p x y)
+;;  `((,p ,x) ,y))
+;;
+;;;; church encoded "and" & "or"
+;;(define (iand p1 p2)
+;;  `((,p1 ,p2) ,false))
+;;(define (ior p1 p2)
+;;  `((,p1 ,true) ,p2))
+;;
+;;;; church encoded not
+;;(define (inot p)
+;;  `((,p ,false) ,true))
+;;
+;;
+;;;; let defined as funcion application, macro for ease of use
+;;(define-syntax ilet
+;;  (syntax-rules (be in)
+;;    ([_ x be y in body] (_let x y body))))
+;;(define (_let x y body)
+;;  `((lambda (,x) ,body) ,y))
+;;
+;;;; helper function for defining numbers
+;;(define (repeat n)
+;;  (cond
+;;    [(= n 0) 'x]
+;;    [else `(f ,(repeat (sub1 n)))]))
+;;
+;;;; church encoded integers
+;;(define (number n)
+;;  `(lambda (f) (lambda (x) ,(repeat n))))
+;;
+;;
+;;;; auxiliary functions on numbers
+;;(define (_add m n)
+;;  `(lambda (f) (lambda (x) ((,m f) ((,n f) x)))))
+;;
+;;
+;;(define (_mult m n)
+;;  `(lambda (f) (lambda (x) ((,m (,n f)) x))))
+;;
+;;(define _pred
+;;'(lambda (n)
+;;                (lambda (f)
+;;                  (lambda (z)
+;;                    (((n (lambda (g) (lambda (h) 
+;;                                  (h (g f)))))
+;;                      (lambda (u) z))
+;;                     (lambda (u) u))))))
+;;
+;;(define (_minus m n)
+;;  `((,n ,_pred) ,m))
+;;
+;;;; printing numbers
+;;(define (print-number n)
+;;  (((eval-expr n empty) add1) 0))
